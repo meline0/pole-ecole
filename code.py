@@ -1,7 +1,7 @@
 import sqlite3
 
 #Connexion
-connexion = sqlite3.connect('mynewbase.db')
+connexion = sqlite3.connect('pole_ecole.db')
 
 #Récupération d'un curseur
 c = connexion.cursor()
