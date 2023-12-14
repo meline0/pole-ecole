@@ -1,5 +1,6 @@
 import sqlite3
-from tkinter import *
+import tkinter as tk
+import csv
 
 #Connexion
 connexion = sqlite3.connect('pole_ecole.db')
@@ -7,7 +8,7 @@ connexion = sqlite3.connect('pole_ecole.db')
 #Récupération d'un curseur
 c = connexion.cursor()
 
-# ---- début des instructions SQL
+# ------------------------------------------- début SQL ----------------------------------------#
 
 #Création de la table
 c.execute("""
@@ -57,9 +58,16 @@ c.execute("""
     );
     """)
 
-# ---- fin des instructions SQL
+#CSV
+with open('mon_fichier.csv', 'r') as file:
+    reader = csv.reader(file, delimiter=',')
+    
+    for row in reader:
+        c.execute('''INSERT INTO bulletin VALUES (?,?,?)''', row)
 
-#Tkinter: fenêtre
+# ---------------------------------------------- fin SQL --------------------------------------------#
+
+# ------------------------------------------- début Tkinter -----------------------------------------#
 
 def center_window(window, width, height):
     screen_width = window.winfo_screenwidth()
@@ -96,7 +104,7 @@ label2.pack(fill=tk.BOTH, expand=True)
 # Lancement de la boucle principale
 root.mainloop()
 
-#Fin Tkinter
+# -------------------------------------------- fin Tkinter ---------------------------------------------#
 
 #Validation
 connexion.commit()
