@@ -1,4 +1,5 @@
 import sqlite3
+from tkinter import *
 
 #Connexion
 connexion = sqlite3.connect('pole_ecole.db')
@@ -60,32 +61,40 @@ c.execute("""
 
 #Tkinter: fenêtre
 
-fenetre = Tk()
-fenetre.mainloop()
+def center_window(window, width, height):
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x = (screen_width - width) // 2
+    y = (screen_height - height) // 2
+    window.geometry(f"{width}x{height}+{x}+{y}")
 
-def alert():
-    showinfo("alerte", "Bravo!")
+# Création de la fenêtre principale
+root = tk.Tk()
+root.title("Pôle école")
 
-menubar = Menu(fenetre)
+# Définir la taille de la fenêtre
+window_width = 400
+window_height = 300
+center_window(root, window_width, window_height)
 
-menu1 = Menu(menubar, tearoff=0)
-menu1.add_command(label="Créer", command=alert)
-menu1.add_command(label="Editer", command=alert)
-menu1.add_separator()
-menu1.add_command(label="Quitter", command=fenetre.quit)
-menubar.add_cascade(label="Fichier", menu=menu1)
+# Cadre 1
+frame1 = tk.Frame(root, bg="lightblue", width=200, height=200)
+frame1.pack_propagate(False)
+frame1.pack(side=tk.LEFT, padx=10)
 
-menu2 = Menu(menubar, tearoff=0)
-menu2.add_command(label="Couper", command=alert)
-menu2.add_command(label="Copier", command=alert)
-menu2.add_command(label="Coller", command=alert)
-menubar.add_cascade(label="Editer", menu=menu2)
+label1 = tk.Label(frame1, text="Cadre 1", font=("Helvetica", 14), bg="lightblue")
+label1.pack(fill=tk.BOTH, expand=True)
 
-menu3 = Menu(menubar, tearoff=0)
-menu3.add_command(label="A propos", command=alert)
-menubar.add_cascade(label="Aide", menu=menu3)
+# Cadre 2
+frame2 = tk.Frame(root, bg="lightgreen", width=200, height=200)
+frame2.pack_propagate(False)
+frame2.pack(side=tk.RIGHT, padx=10)
 
-fenetre.config(menu=menubar)
+label2 = tk.Label(frame2, text="Cadre 2", font=("Helvetica", 14), bg="lightgreen")
+label2.pack(fill=tk.BOTH, expand=True)
+
+# Lancement de la boucle principale
+root.mainloop()
 
 #Fin Tkinter
 
