@@ -59,11 +59,51 @@ c.execute("""
     """)
 
 #CSV
-with open('mon_fichier.csv', 'r') as file:
+#Table école
+with open('ecoles.csv', 'r') as file:
     reader = csv.reader(file, delimiter=',')
-    
+
     for row in reader:
-        c.execute('''INSERT INTO bulletin VALUES (?,?,?)''', row)
+        c.execute('''INSERT INTO ecoles VALUES (?,?,?,?,?)''', row)
+
+#Table jobs
+with open('jobs.csv', 'r') as file:
+    reader = csv.reader(file, delimiter=',')
+
+    for row in reader:
+        c.execute('''INSERT INTO jobs VALUES (?,?,?,?)''', row)
+
+#Table domaines
+with open('domaines'.csv', 'r') as file:
+    reader = csv.reader(file, delimiter=',')
+
+    for row in reader:
+        c.execute('''INSERT INTO domaines VALUES (?,?)''', row)
+
+#Table proposer
+with open('proposer.csv', 'r') as file:
+    reader = csv.reader(file, delimiter=',')
+
+    for row in reader:
+        c.execute('''INSERT INTO proposer VALUES (?,?)''', row)
+
+#Table client
+#input dans le tkinter, une def?
+def client():
+    nom = input('Nom ? ')
+    prenom = input('Prénom ? ')
+    mail = input('Mail ? ')
+    num = input('Mail ? ')
+    p = "INSERT INTO client VALUES ('" + nom + "','" + prenom + "','" + note + "')"
+    c.executescript(p)
+
+#fin CSV
+
+#Rechercher
+def rechercher_ecoles():
+    data = ('Simpson', )
+    c.execute("SELECT prenom FROM bulletin WHERE nom = ?", data)
+    print(c.fetchall())
 
 # ---------------------------------------------- fin SQL --------------------------------------------#
 
