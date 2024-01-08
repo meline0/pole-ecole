@@ -11,6 +11,7 @@ c = connexion.cursor()
 # ------------------------------------------- début SQL ----------------------------------------#
 
 #Création de la table
+
 c.execute("""
     CREATE TABLE IF NOT EXISTS ecoles (
     id_ecole INTEGER PRIMARY KEY,
@@ -40,7 +41,7 @@ c.execute("""
 	id_ecole INTEGER,
 	PRIMARY KEY (id_domaine, id_ecole),
 	FOREIGN KEY (id_domaine) REFERENCES domaines (id_domaine),
-	FOREIGN KEY (id_ecole) REFERENCES ecoles (id_ecole) 
+	FOREIGN KEY (id_ecole) REFERENCES ecoles (id_ecole)
     );
     """)
 c.execute("""
@@ -50,15 +51,39 @@ c.execute("""
 	prenom TEXT,
 	mail TEXT,
 	num INTEGER,
-	date_naissance date,
-	id_ecole INTEGER,
-	id_job INTEGER,
-	FOREIGN KEY (id_job) REFERENCES jobs (id_job),
-	FOREIGN KEY (id_ecole) REFERENCES ecoles (id_ecole) 
+	age INTEGER
+    );
+    """)
+
+c.execute("""
+    CREATE TABLE IF NOT EXISTS sauvegarde_e (
+    id_client INTEGER PRIMARY KEY,
+	ecole1 INTEGER,
+	ecole2 INTEGER,
+	ecole3 INTEGER,
+	ecole4 INTEGER,
+	ecole5 INTEGER,
+	ecole6 INTEGER,
+	ecole7 INTEGER,
+	ecole8 INTEGER,
+	ecole9 INTEGER,
+	ecole10 INTEGER,
+	FOREIGN KEY (id_client) REFERENCES client (id_client),
+	FOREIGN KEY (ecole1) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole2) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole3) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole4) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole5) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole6) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole7) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole8) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole9) REFERENCES ecoles (id_ecole),
+	FOREIGN KEY (ecole10) REFERENCES ecoles (id_ecole)
     );
     """)
 
 #CSV
+
 #Table école
 with open('ecoles.csv', 'r') as file:
     reader = csv.reader(file, delimiter=',')
@@ -74,7 +99,7 @@ with open('jobs.csv', 'r') as file:
         c.execute('''INSERT INTO jobs VALUES (?,?,?,?)''', row)
 
 #Table domaines
-with open('domaines'.csv', 'r') as file:
+with open('domaines.csv', 'r') as file:
     reader = csv.reader(file, delimiter=',')
 
     for row in reader:
@@ -88,22 +113,34 @@ with open('proposer.csv', 'r') as file:
         c.execute('''INSERT INTO proposer VALUES (?,?)''', row)
 
 #Table client
-#input dans le tkinter, une def?
 def client():
     nom = input('Nom ? ')
     prenom = input('Prénom ? ')
     mail = input('Mail ? ')
-    num = input('Mail ? ')
-    p = "INSERT INTO client VALUES ('" + nom + "','" + prenom + "','" + note + "')"
+    num = input('Numéro de téléphone ? ')
+    age = input('Age ?')
+    p = "INSERT INTO client VALUES ('" + nom + "','" + prenom + "','" + mail + "','" + num + "','" + age + "')"
     c.executescript(p)
 
-#fin CSV
 
 #Rechercher
-def rechercher_ecoles():
-    data = ('Simpson', )
-    c.execute("SELECT prenom FROM bulletin WHERE nom = ?", data)
+
+def afficher_domaines():
+    #bouton pour afficher tous les domaines
+    c.execute("SELECT nom_domaine FROM domaines")
     print(c.fetchall())
+
+def rechercher_domaine():
+    data = input('Formation' ) #bouton d'une formation spécifique
+    c.execute("SELECT ecoles.nom_ecole FROM proposer JOIN ecoles ON         proposer.id_ecole = ecoles.id_ecole JOIN proposer.id_domaine = domaines.id_domaine WHERE nom_domaine = ?", "'" + data + "'")
+    print(c.fetchall())
+
+def rechercher_ecole():
+    data = input('Ecole' ) #bouton d'une école spécifique
+    c.execute("SELECT nom_ecole, lien, adresse, description FROM ecoles WHERE nom_ecole= ?", "'" + data + "'")
+    print(c.fetchall())
+
+#fin CSV
 
 # ---------------------------------------------- fin SQL --------------------------------------------#
 
