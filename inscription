@@ -1,0 +1,60 @@
+from tkinter import *
+from tkinter import ttk
+
+fenetre = Tk()
+fenetre.geometry("300x200")
+
+
+def inscription():
+    label = Label(fenetre, text="Inscription")
+    l1 = Label(fenetre, text = "Prénom:")
+    l2 = Label(fenetre, text = "Nom:")
+    l3 = Label(fenetre, text = "Age:")
+    s = Spinbox(fenetre, from_=0, to=99)
+    l4 = Label(fenetre, text = "mail:")
+    l5 = Label(fenetre, text = "numero")
+
+
+    label.grid(row = 0, column = 1, sticky = W, pady = 4)
+    l1.grid(row = 1, column = 0, sticky = W, pady = 2)
+    l2.grid(row = 2, column = 0, sticky = W, pady = 2)
+    l3.grid(row = 3, column = 0, sticky = W, pady = 2)
+    s.grid(row = 3, column = 1, sticky = W, pady = 2)
+    l4.grid(row = 4, column = 0, sticky = W, pady = 2)
+    l5.grid(row = 5, column = 0, sticky = W, pady = 2)
+
+    def show_msg_enregistrer():
+        h1 = str(getEntry(e1))
+        h2 = str(getEntry(e2))
+        h3 = str(getEntry(s))
+        h4 = str(getEntry(e4))
+        h5 = str(getEntry(e5))
+        fenetre.destroy()
+        p = "INSERT INTO client VALUES ('" + h1 + "','" + h2 + "','" + h4 + "','" + h5 + "','" + h3 + "')"
+        c.executescript(p)
+
+    def getEntry(nm):
+        res = nm.get()
+        print(res)
+
+    button = ttk.Button(text= "Enrgistrer>>",command=show_msg_enregistrer)
+    button.grid(row = 6, column = 2, pady = 2)
+
+
+    e1 = Entry(fenetre)
+    e2 = Entry(fenetre)
+    e4 = Entry(fenetre)
+    e5 = Entry(fenetre)
+
+    e1.grid(row = 1, column = 1, pady = 2)
+    e2.grid(row = 2, column = 1, pady = 2)
+    e4.grid(row = 4, column = 1, pady = 2)
+    e5.grid(row = 5, column = 1, pady = 2)
+
+
+
+
+
+    fenetre.mainloop()
+
+inscription()
