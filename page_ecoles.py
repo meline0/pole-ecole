@@ -23,26 +23,21 @@ def creer_label_ecole(parent, nom, adresse, url):
     label_lien.bind("<Button-1>", ouvrir_lien)
 
     checked = BooleanVar()
-    checkup_button = Checkbutton(parent, text="Checkup", variable=checked, command=lambda: handle_checkup(nom, adresse, url, fav_csv, checked.get()))
+    checkup_button = Checkbutton(parent, text="Checkup", variable=checked, command=lambda: etat_bouton_fav(nom, adresse, url, fav_csv, checked.get()))
     checkup_button.pack()
 
-def handle_checkup(nom, adresse, url, csv_file, checked):
-    if checked:
-        load_data_to_csv(nom, adresse, url, csv_file)
-    else:
-        load_data_to_csv(nom, adresse, url, csv_file, delete=True)
+def etat_bouton_fav(nom, adresse, url, csv_file, coche):
+    if coche:
+        enregistre_dans_fav_csv(nom, adresse, url, csv_file)
+#    else:
+#        enregistre_dans_fav_csv(nom, adresse, url, csv_file, delete=True)
 
-def load_data_to_csv(nom, adresse, url, fav_csv):
-    # Load the school's data into the CSV file
+def enregistre_dans_fav_csv(nom, adresse, url, fav_csv):
     with open(fav_csv, 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([nom, adresse, url])
 
-def read_fav_csv():
-    with open('fav_csv', 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            print(row)
+
             
 #def centrer_fenetre(window, width, height):
 #    screen_width = window.winfo_screenwidth()
