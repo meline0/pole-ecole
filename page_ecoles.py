@@ -1,11 +1,11 @@
 from tkinter import *
 import webbrowser
+import csv
 
 content_frame = None
+fav_csv = "favorits.csv"
 
 
-def ouvrir_lien_ecole(url):
-    webbrowser.open(url)
 
 def creer_label_ecole(parent, nom, adresse, url):
     label_nom = Label(parent, text=nom, font=("arial", 18), fg="black", bg="#9c742f")
@@ -18,10 +18,32 @@ def creer_label_ecole(parent, nom, adresse, url):
     label_lien.pack()
 
     def ouvrir_lien(event):
-        ouvrir_lien_ecole(url)
+        webbrowser.open(url)
 
     label_lien.bind("<Button-1>", ouvrir_lien)
 
+    checked = BooleanVar()
+    checkup_button = Checkbutton(parent, text="Checkup", variable=checked, command=lambda: handle_checkup(nom, adresse, url, fav_csv, checked.get()))
+    checkup_button.pack()
+
+def handle_checkup(nom, adresse, url, csv_file, checked):
+    if checked:
+        load_data_to_csv(nom, adresse, url, csv_file)
+    else:
+        load_data_to_csv(nom, adresse, url, csv_file, delete=True)
+
+def load_data_to_csv(nom, adresse, url, fav_csv):
+    # Load the school's data into the CSV file
+    with open(fav_csv, 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([nom, adresse, url])
+
+def read_fav_csv():
+    with open('fav_csv', 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            print(row)
+            
 #def centrer_fenetre(window, width, height):
 #    screen_width = window.winfo_screenwidth()
 #    screen_height = window.winfo_screenheight()#
