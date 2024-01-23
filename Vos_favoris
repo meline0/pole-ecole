@@ -1,0 +1,56 @@
+import tkinter
+from tkinter import *
+from tkinter import ttk, messagebox
+import csv
+
+
+fin = Tk()
+
+def cancella():
+    selezione = tv.selection()[0]
+    mb_canc = messagebox.askokcancel(
+        title="Confirmation de suppression",
+        message="Souhaitez-vous confirmer la suppression de l'école?")
+    if mb_canc == True:
+        tv.delete(selezione)
+        with open('favorits.csv', 'w') as elenco:
+            tv.get()
+            scrit = csv.writer(elenco)
+            scrit.write()
+            for row in ... :
+                adr = row[0]
+                eco = row[1]
+                url = row[2]
+        elenco.close()
+
+tv = ttk.Treeview(fin,
+                  columns=("Ecole", "Adresse", "URL"),
+                  show='headings')
+
+tv.column('#0')
+tv.column('#1')
+tv.column('#2')
+tv.column('#3')
+
+tv.heading('#0')
+tv.heading('#1', text="Ecole")
+tv.heading('#2', text="Adresse")
+tv.heading('#3', text="URL")
+
+tv.pack()
+
+with open('favorits.csv', 'r+') as elenco:
+    lettore = csv.reader(elenco)
+    for row in lettore:
+        adr = row[0]
+        eco = row[1]
+        url = row[2]
+        
+        tv.insert("", 0, values=(adr, eco, url))
+    
+puls_canc = Button(fin, text="Supprimer",
+                   command=cancella)
+puls_canc.pack()
+
+
+fin.mainloop()
