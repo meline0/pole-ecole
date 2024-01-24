@@ -32,17 +32,16 @@ def creer_label_ecole(parent, nom, adresse, url):
 
 def etat_bouton_fav(nom, adresse, url, csv_file, coche):
     if coche:
-        enregistre_dans_fav_csv()
+        enregistre_dans_fav_csv(nom, url,adresse)
 #    else:
 #        enregistre_dans_fav_csv(nom, adresse, url, csv_file, delete=True)
 
-def enregistre_dans_fav_csv(nom):
+def enregistre_dans_fav_csv(nom, lien, adresse):
     fichier = open("mail.txt", "r")
     mail = fichier.read()
     c.execute("SELECT id_client From client WHERE mail ="+mail)
     id = c.fetchall
-    c.execute('''INSERT INTO sauvegarde VALUES (?,?)''', id, nom)
-
+    c.execute('''INSERT INTO sauvegarde VALUES (?,?,?,?)''', id, nom, lien, adresse)
 
 
 #def centrer_fenetre(window, width, height):
