@@ -6,6 +6,10 @@ import csv
 
 fin = Tk()
 
+"""def refresh_window():
+    window.update()
+    window.update_idletasks()"""
+
 ###Le fonction qui permet de supprimer une ligne
 def cancella():
     fichier = open("mail.txt","r")
@@ -33,15 +37,22 @@ tv.heading('#3', text="URL")
 
 tv.pack()
 
-###A changer pour que les données soient prise du SQL et pas du csv
+###Recupère les données de sauvegarde et les mets dans la page tkinter
+c.execute("SELECT nom_ecole,lien,adresse FROM sauvegarde)
+favoris = c.fetchall
+for i in range(len(favoris)):
+    eco = favoris[i][0]
+    url = favoris[i][1]
+    adr = favoris[i][2]
+    
 
-with open('favorits.csv', 'r+') as elenco:
+"""with open('favorits.csv', 'r+') as elenco:
     lettore = csv.reader(elenco)
     for row in lettore:
         adr = row[0]
         eco = row[1]
-        url = row[2]
-        
+        url = row[2]"""
+    
         tv.insert("", 0, values=(adr, eco, url))
 
 #Met le bouton qui supprime renvoie a la fonction cancella
