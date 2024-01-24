@@ -6,27 +6,21 @@ import csv
 
 fin = Tk()
 
+###Le fonction qui permet de supprimer une ligne
 def cancella():
-    selezione = tv.selection()[0]
-    mb_canc = messagebox.askokcancel(
-        title="Confirmation de suppression",
-        message="Souhaitez-vous confirmer la suppression de l'école?")
-    if mb_canc == True:
-        tv.delete(selezione)
-        with open('favorits.csv', 'w') as elenco:
-            tv.get()
-            scrit = csv.writer(elenco)
-            scrit.write()
-            for row in ... :
-                adr = row[0]
-                eco = row[1]
-                url = row[2]
-        elenco.close()
+    fichier = open("mail.txt","r")
+    mail = fichier.read()
+    c.execute("SELECT id_client FROM client WHERE mail ="+mail)
+    id = c.fetchall
+    c.execute("DELETE FROM sauvegarde WHERE nom_ecole ="+ecole+"AND id_client = "+id)
+
+
 
 tv = ttk.Treeview(fin,
                   columns=("Ecole", "Adresse", "URL"),
                   show='headings')
 
+###Les colonnes qu'il y a sur le tkinter
 tv.column('#0')
 tv.column('#1')
 tv.column('#2')
@@ -39,6 +33,8 @@ tv.heading('#3', text="URL")
 
 tv.pack()
 
+###A changer pour que les données soient prise du SQL et pas du csv
+
 with open('favorits.csv', 'r+') as elenco:
     lettore = csv.reader(elenco)
     for row in lettore:
@@ -47,7 +43,8 @@ with open('favorits.csv', 'r+') as elenco:
         url = row[2]
         
         tv.insert("", 0, values=(adr, eco, url))
-    
+
+#Met le bouton qui supprime renvoie a la fonction cancella
 puls_canc = Button(fin, text="Supprimer",
                    command=cancella)
 puls_canc.pack()
