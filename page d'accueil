@@ -61,28 +61,11 @@ c.execute("""
 
 c.execute("""
     CREATE TABLE IF NOT EXISTS sauvegarde (
-    id_client INTEGER PRIMARY KEY,
-	ecole1 INTEGER,
-	ecole2 INTEGER,
-	ecole3 INTEGER,
-	ecole4 INTEGER,
-	ecole5 INTEGER,
-	ecole6 INTEGER,
-	ecole7 INTEGER,
-	ecole8 INTEGER,
-	ecole9 INTEGER,
-	ecole10 INTEGER,
+    id_client INTEGER,
+	ecole INTEGER,
+	PRIMARY KEY (id_client, ecole)
 	FOREIGN KEY (id_client) REFERENCES client (id_client),
-	FOREIGN KEY (ecole1) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole2) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole3) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole4) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole5) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole6) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole7) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole8) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole9) REFERENCES ecoles (id_ecole),
-	FOREIGN KEY (ecole10) REFERENCES ecoles (id_ecole)
+	FOREIGN KEY (ecole) REFERENCES ecoles (id_ecole)
     );
     """)
 
@@ -91,31 +74,31 @@ c.execute("""
 # #Table école
 # with open('ecoles.csv', 'r') as file:
 #     reader = csv.reader(file, delimiter=';')
-# 
+#
 #     for row in reader:
 #         c.execute('''INSERT INTO ecoles VALUES (?,?,?,?)''', row)
-# 
+#
 # #Table jobs
 # with open('jobs.csv', 'r') as file:
 #     reader = csv.reader(file, delimiter=';')
-# 
+#
 #     for row in reader:
 #         c.execute('''INSERT INTO jobs VALUES (?,?,?)''', row)
-# 
+#
 # #Table domaines
 # with open('domaines.csv', 'r') as file:
 #     reader = csv.reader(file, delimiter=';')
-# 
+#
 #     for row in reader:
 #         c.execute('''INSERT INTO domaines VALUES (?,?)''', row)
-# 
+#
 # #Table proposer
 # with open('proposer.csv', 'r') as file:
 #     reader = csv.reader(file, delimiter=';')
-# 
+#
 #     for row in reader:
 #         c.execute('''INSERT INTO proposer VALUES (?,?)''', row)
-# 
+#
 # #Table client
 # c.execute('''INSERT INTO client VALUES (0, "test", "test", "test", 0, 0, "test")''')
 
@@ -155,6 +138,9 @@ def inscription():
         h4 = str(getEntry(e4))
         h5 = str(getEntry(e5))
         h6 = str(getEntry(e6))
+        fichier = open("mail.txt", "w")
+        fichier.write(h4)
+        fichier.close()
         fenetre.destroy()
         p = "INSERT INTO client VALUES ('" + id + "','" + h2 + "','" + h1 + "','" + h4 + "','" + h5 + "','" + h3 + "','" + h6 + "')"
         c.executescript(p)
@@ -181,17 +167,20 @@ def inscription():
 
 
 def connecter():
-    label = Label(fenetre, text="Connection")
+    label = Label(fenetre, text="Connexion")
     l1 = Label(fenetre, text = "Mail:")
     l2 = Label(fenetre, text = "Mot de passe:")
-    
+
     label.grid(row = 0, column = 1, sticky = W, pady = 4)
     l1.grid(row = 1, column = 0, sticky = W, pady = 2)
     l2.grid(row = 2, column = 0, sticky = W, pady = 2)
-    
+
     def show():
         h1 = str(getentry(e1))
         h2 = str(getentry(e2))
+        fichier = open("mail.txt", "w")
+        fichier.write(h1)
+        fichier.close()
         fenetre.destroy()
         c.execute('''SELECT mail, motdepasse FROM client''')
         liste=c.fetchall()
@@ -201,7 +190,7 @@ def connecter():
         else:
             #proposer de s'inscrire
             i=0
-        
+
 
     def getentry(nm):
         res = nm.get()
@@ -209,31 +198,31 @@ def connecter():
 
     button = ttk.Button(text= "Se connecter>>",command=show)
     button.grid(row = 6, column = 2, pady = 2)
-    
+
     e1 = Entry(fenetre)
     e2 = Entry(fenetre)
-    
+
     e1.grid(row = 1, column = 1, pady = 2)
     e2.grid(row = 2, column = 1, pady = 2)
 
 
-    
+
 def window():
     #sign up
     button2 = ttk.Button(text= "S'inscrire",command=inscription)
     button2.grid(row = 2, column = 2, pady = 2)
-    
+
     #sign in
     button3 = ttk.Button(text= "Se connecter",command=connecter)
     button3.grid(row = 3, column = 2, pady = 2)
-    
+
     fenetre.mainloop()
-    
+
     # def destroy():
     #     Button.destroy(button2)
     #     Button.destroy(button3)
-    
-    
+
+
 window()
 
 #Validation
