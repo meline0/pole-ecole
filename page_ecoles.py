@@ -1,10 +1,14 @@
 from tkinter import *
 import webbrowser
 import csv
+import sqlite3
+
 
 content_frame = None
 fav_csv = "favorits.csv"
 
+connexion = sqlite3.connect('pole_ecole.db')
+c = connexion.cursor()
 
 
 def creer_label_ecole(parent, nom, adresse, url):
@@ -28,17 +32,19 @@ def creer_label_ecole(parent, nom, adresse, url):
 
 def etat_bouton_fav(nom, adresse, url, csv_file, coche):
     if coche:
-        enregistre_dans_fav_csv(nom, adresse, url, csv_file)
+        enregistre_dans_fav_csv()
 #    else:
 #        enregistre_dans_fav_csv(nom, adresse, url, csv_file, delete=True)
 
-def enregistre_dans_fav_csv(nom, adresse, url, fav_csv):
-    with open(fav_csv, 'a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([nom, adresse, url])
+def enregistre_dans_fav_csv(nom):
+    fichier = open("mail.txt", "r")
+    mail = fichier.read()
+    c.execute("SELECT id_client From client WHERE mail ="+mail)
+    id = c.fetchall
+    c.execute('''INSERT INTO sauvegarde VALUES (?,?)''', id, nom)
 
 
-            
+
 #def centrer_fenetre(window, width, height):
 #    screen_width = window.winfo_screenwidth()
 #    screen_height = window.winfo_screenheight()#
@@ -158,7 +164,7 @@ def ecoles():
     creer_label_ecole(content_frame, "ESIEE Paris - École d'Ingénieurs en Informatique, Électronique et Électrotechnique", "2 Boulevard Blaise Pascal, 93160 Noisy-le-Grand, France", "\nhttps://www.esiee.fr/""\n")
     creer_label_ecole(content_frame, "ENSEIRB-MATMECA - Électronique, Informatique, Télécommunications", "1 Avenue du Dr Albert Schweitzer, 33402 Talence Cedex, France", "\nhttps://enseirb-matmeca.bordeaux-inp.fr/""\n")
     creer_label_ecole(content_frame, "Arts et Métiers ParisTech - Énergie, Électricité, Automatique", "151 Boulevard de l'Hôpital, 75013 Paris, France", "\nhttps://www.artsetmetiers.fr/""\n")
-    
+
     labelDom8 = Label(content_frame, text="\n\n Environnement\n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
     labelDom8.pack()
     creer_label_ecole(content_frame, "École Nationale des Ponts et Chaussées (ENPC)", "15 Rue de la Fontaine au Roi, 75011 Paris", "https://www.ecoledesponts.fr/""\n")
@@ -263,7 +269,7 @@ def ecoles():
     creer_label_ecole(content_frame, "IUT de Roanne - Département Gestion Logistique et Transport", "56 Cours de la République, 42300 Roanne, France", "https://iut-roanne.univ-st-etienne.fr/fr/index.html""\n")
 
     labelDom16 = Label(content_frame, text="\n\n Industrie \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom16.pack()   
+    labelDom16.pack()
     creer_label_ecole(content_frame, "MINES ParisTech", "60 Boulevard Saint-Michel, 75006 Paris", "http://www.mines-paristech.fr""\n")
     creer_label_ecole(content_frame, "École des Mines d'Alès", "6 Avenue de Clavières, 30319 Alès", "http://www.mines-ales.fr""\n")
     creer_label_ecole(content_frame, "École Centrale Paris", "Grande Voie des Vignes, 92290 Châtenay-Malabry", "http://www.centralesupelec.fr""\n")
@@ -277,7 +283,7 @@ def ecoles():
 
 
     labelDom17 = Label(content_frame, text="\n\n Mécanique \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom17.pack()  
+    labelDom17.pack()
     creer_label_ecole(content_frame, "Arts et Métiers ParisTech", "151 Boulevard de l'Hôpital, 75013 Paris, France", "https://artsetmetiers.fr""\n")
     creer_label_ecole(content_frame, "INSA Lyon - Département de Génie Mécanique", "20 Avenue Albert Einstein, 69621 Villeurbanne Cedex, France", "https://www.insa-lyon.fr""\n")
     creer_label_ecole(content_frame, "ENSTA ParisTech - Département de Mécanique des Structures et Matériaux", "828 Boulevard des Maréchaux, 91762 Palaiseau Cedex, France", "http://www.ensta-paristech.fr""\n")
@@ -291,7 +297,7 @@ def ecoles():
 
 
     labelDom18 = Label(content_frame, text="\n\n Sports et SAnté \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom18.pack() 
+    labelDom18.pack()
     creer_label_ecole(content_frame, "Université Paris-Sud - UFR STAPS", "62 Avenue de la Division Leclerc, 92400 Ivry-sur-Seine", "https://www.universite-paris-saclay.fr""\n")
     creer_label_ecole(content_frame, "INSEP (Institut National du Sport, de l'Expertise et de la Performance)", "11 Avenue du Tremblay, 75012 Paris", "https://www.insep.fr""\n")
     creer_label_ecole(content_frame, "Université Lyon 1 - UFR STAPS", "27-29 Boulevard du 11 Novembre 1918, 69622 Villeurbanne", "https://ufr-staps.univ-lyon1.fr/""\n")
@@ -305,7 +311,7 @@ def ecoles():
     creer_label_ecole(content_frame, "Université Pierre et Marie Curie (UPMC) - UFR de Biologie", "4 Place Jussieu, 75005 Paris, France.", "https://www.sorbonne-universite.fr""\n")
 
     labelDom19 = Label(content_frame, text="\n\n Biologie \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom19.pack() 
+    labelDom19.pack()
     creer_label_ecole(content_frame, "Aix-Marseille Université - Faculté des Sciences de Luminy - Département de Biologie", "163 Avenue de Luminy, 13288 Marseille Cedex 09, France.", "https://sciences.univ-amu.fr/fr/departements/biologie""\n")
     creer_label_ecole(content_frame, "Université Claude Bernard Lyon 1 - UFR de Biologie", "43 Boulevard du 11 Novembre 1918, 69622 Villeurbanne Cedex, France.", "https://www.univ-lyon1.fr""\n")
     creer_label_ecole(content_frame, "Université Paris-Sud - UFR Sciences - Département de Biologie", "Bâtiment 360, 91405 Orsay Cedex, France.", "https://www.universite-paris-saclay.fr""\n")
@@ -319,7 +325,7 @@ def ecoles():
     creer_label_ecole(content_frame, "ENSE3 (École Nationale Supérieure de l'Énergie, l'Eau et l'Environnement)", "21 Avenue des Martyrs, 38000 Grenoble", "https://ense3.grenoble-inp.fr""\n")
 
     labelDom20 = Label(content_frame, text="\n\n Énergie \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom20.pack() 
+    labelDom20.pack()
     creer_label_ecole(content_frame, "ICAM (Institut Catholique d'Arts et Métiers) - Campus de Lille", "6 Rue Auber, 59000 Lille", "https://www.icam.fr/lille""\n")
     creer_label_ecole(content_frame, "INP-ENSEEIHT ", "2 Rue Charles Camichel, 31071 Toulouse", "https://www.enseeiht.fr""\n")
     creer_label_ecole(content_frame, "ENSTA Paris", "32 Boulevard Victor, 75739 Paris Cedex 15", "https://www.ensta-paris.fr""\n")
@@ -332,7 +338,7 @@ def ecoles():
     creer_label_ecole(content_frame, "École Nationale Supérieure de Chimie de Rennes (ENSCR)", "11 Allée de Beaulieu, CS 50837, 35708 Rennes Cedex 7, France.", "https://www.ensc-rennes.fr""\n")
 
     labelDom21 = Label(content_frame, text="\n\n Chimie \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom21.pack() 
+    labelDom21.pack()
     creer_label_ecole(content_frame, "Institut de Chimie et des Matériaux Paris-Est (ICMPE)", "2-8 Rue Henri Dunant, 94320 Thiais, France.", "https://www.icmpe.cnrs.fr/""\n")
     creer_label_ecole(content_frame, "ENSCL - École Nationale Supérieure de Chimie de Lille", "Cité Scientifique - CS 90108, 59652 Villeneuve-d'Ascq Cedex, France.", "https://www.univ-lille.fr/enscl""\n")
     creer_label_ecole(content_frame, "Institut Charles Gerhardt Montpellier - UMR 5253", "Place Eugène Bataillon, CC 1501, 34095 Montpellier Cedex 5, France.", "https://www.icgm.fr""\n")
@@ -342,7 +348,7 @@ def ecoles():
     creer_label_ecole(content_frame, "Institut de Chimie de Nice (ICN)", "Parc Valrose, 06108 Nice Cedex 2, France.", "https://imredd.fr/lab/icn/""\n")
 
     labelDom22 = Label(content_frame, text="\n\n Mathématiques \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom22.pack() 
+    labelDom22.pack()
 
     creer_label_ecole(content_frame, "ENS (École Normale Supérieure) - Département de Mathématiques et Applications", "45 Rue d'Ulm, 75005 Paris, France.", "https://www.math.ens.fr/""\n")
     creer_label_ecole(content_frame, "Université Pierre et Marie Curie (UPMC) - UFR de Mathématiques", "4 Place Jussieu, 75005 Paris, France.", "https://www.math.upmc.fr/""\n")
@@ -357,7 +363,7 @@ def ecoles():
 
 
     labelDom23 = Label(content_frame, text="\n\n Physique \n\n", font= ("arial",25), fg ="#2F699C", bg="#9c742f")
-    labelDom23.pack() 
+    labelDom23.pack()
 
     creer_label_ecole(content_frame, "ENS (École Normale Supérieure) - Département de Physique", "24 Rue Lhomond, 75005 Paris, France.", "https://www.phys.ens.fr/""\n")
     creer_label_ecole(content_frame, "Université Pierre et Marie Curie (UPMC) - UFR de Physique", "4 Place Jussieu, 75005 Paris, France.", "https://sciences.sorbonne-universite.fr/faculte/ufr-instituts-observatoires-ecoles/ufr-de-physique""\n")
