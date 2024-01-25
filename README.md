@@ -26,4 +26,10 @@
 
 #Elisa
 
-->
+-> Chercher des écoles et des informations sur elles
+
+-> Ecrit page ecoles
+
+-> Ecrit page favorits 
+
+-> essayé relier pages entre elles
