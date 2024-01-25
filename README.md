@@ -18,6 +18,8 @@
 
 -> Créer les tables et la base de données
 
+-> Créer les fichiers csv
+
 -> Créer les fonctions pour se connecter
 
 -> Gérer le SQL pour enregistrer et récupérer les données
