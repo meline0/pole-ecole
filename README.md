@@ -33,3 +33,28 @@
 -> Ecrit page favorits 
 
 -> essayé relier pages entre elles
+
+
+##Les problèmes rencontrés
+
+-Relier les pages tkinter entre elles
+
+-Reussir a enlever les boutons lorsqu'on change de page
+
+-Importer les écoles et les métiers des tables SQL
+
+
+##Choses à améliorer
+
+-Rendre plus estétique les pages tkinter
+
+-Trouver un moyen d'intégrer la table jobs au tkinter
+
+-Permettre a l'utilisateur d'ajouters des écoles à la base de donnée
+
+
+
+
+
+
+
