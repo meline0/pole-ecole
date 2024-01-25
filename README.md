@@ -32,14 +32,14 @@
 
 -> Ecrit page favorits 
 
--> essayé relier pages entre elles
+-> Essayé relier pages entre elles
 
 
 ##Les problèmes rencontrés
 
 -Relier les pages tkinter entre elles
 
--Reussir a enlever les boutons lorsqu'on change de page
+-Réussir a enlever les boutons lorsqu'on change de page
 
 -Importer les écoles et les métiers des tables SQL
 
