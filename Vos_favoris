@@ -6,19 +6,18 @@ import csv
 
 fin = Tk()
 
-"""def refresh_window():
-    window.update()
-    window.update_idletasks()"""
+def refresh_window():
+    fin.update()
+    fin.update_idletasks()
 
 ###Le fonction qui permet de supprimer une ligne
-def cancella():
+def cancella(ecole):
     fichier = open("mail.txt","r")
     mail = fichier.read()
     c.execute("SELECT id_client FROM client WHERE mail ="+mail)
     id = c.fetchall
-    c.execute("DELETE FROM sauvegarde WHERE nom_ecole ="+ecole+"AND id_client = "+id)
-
-
+    c.execute("DELETE FROM sauvegarde WHERE nom_ecole ='"+ecole+"'AND id_client = "+id)
+    refresh_window()
 
 tv = ttk.Treeview(fin,
                   columns=("Ecole", "Adresse", "URL"),
@@ -57,7 +56,7 @@ for i in range(len(favoris)):
 
 #Met le bouton qui supprime renvoie a la fonction cancella
 puls_canc = Button(fin, text="Supprimer",
-                   command=cancella)
+                   command=cancella(eco))
 puls_canc.pack()
 
 
