@@ -825,7 +825,8 @@ def favorits():
     fin = Tk()
     connexion = sqlite3.connect('pole_ecole.db')
     c = connexion.cursor()
-    ###Le fonction qui permet de supprimer une ligne
+    
+	###Le fonction qui permet de supprimer une ligne
     def cancella():
             selezione = tv.selection()[0]
             mb_canc = messagebox.askokcancel(
@@ -833,11 +834,12 @@ def favorits():
                 message="Voulez-vous confirmer l'élimination?")
             if mb_canc == True:
                 tv.delete(selezione)
-                """fichier = open("mail.txt","r") 
-                mail = fichier.read()
-                c.execute("SELECT id_client FROM client WHERE mail ="+mail)
-                id = c.fetchall()
-                c.execute("DELETE FROM sauvegarde WHERE nom_ecole ='"+selezione+"'AND id_client = "+id)"""
+                for st in selezione:
+                    k = int(selezione[-1]) - 1
+                c.execute("SELECT nom_ecole,lien,adresse FROM sauvegarde")
+                v = c.fetchall()
+                ecole = v[k][2]
+                c.execute("SELECT nom_ecole,lien,adresse FROM sauvegarde WHERE nom_ecole = '"+ecole+"'")
 
 
     tv = ttk.Treeview(fin,
