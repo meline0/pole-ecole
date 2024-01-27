@@ -32,7 +32,8 @@
 
 -> Ecrit page favorits 
 
--> Essayé relier pages entre elles
+-> Relié pages entre elles
+
 
 
 ##Les problèmes rencontrés
