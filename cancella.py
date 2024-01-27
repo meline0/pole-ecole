@@ -17,7 +17,7 @@ c.execute("""
 	nom_ecole TEXT,
 	lien TEXT,
 	adresse TEXT,
-	PRIMARY KEY (id_client, nom_ecole)
+	PRIMARY KEY (id_client, nom_ecole),
 	FOREIGN KEY (id_client) REFERENCES client (id_client),
 	FOREIGN KEY (nom_ecole) REFERENCES ecoles (nom_ecole)
     );
