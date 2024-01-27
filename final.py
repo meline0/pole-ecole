@@ -3,11 +3,233 @@ from tkinter import ttk, messagebox
 import webbrowser
 import sqlite3
 
+
+fenetre = Tk()
+fenetre.geometry("400x200")
+
 content_frame = None
 fav_csv = "favorits.csv"
 
 connexion = sqlite3.connect('pole_ecole.db')
 c = connexion.cursor()
+
+# ------------------------------------------- début SQL ----------------------------------------#
+
+#Création de la table
+
+c.execute("""
+    CREATE TABLE IF NOT EXISTS ecoles (
+    id_ecole INTEGER PRIMARY KEY,
+    nom_ecole TEXT,
+    lien TEXT,
+    adresse TEXT
+    );
+    """)
+c.execute("""
+    CREATE TABLE IF NOT EXISTS jobs (
+    id_job INTEGER PRIMARY KEY,
+    nom_job TEXT,
+    description TEXT
+    );
+    """)
+c.execute("""
+    CREATE TABLE IF NOT EXISTS domaines (
+    id_domaine INTEGER PRIMARY KEY,
+    nom_domaine TEXT
+    );
+    """)
+c.execute("""
+    CREATE TABLE IF NOT EXISTS proposer (
+    id_domaine INTEGER,
+	id_ecole INTEGER,
+	PRIMARY KEY (id_domaine, id_ecole),
+	FOREIGN KEY (id_domaine) REFERENCES domaines (id_domaine),
+	FOREIGN KEY (id_ecole) REFERENCES ecoles (id_ecole)
+    );
+    """)
+c.execute("""
+    CREATE TABLE IF NOT EXISTS client (
+    id_client INTEGER PRIMARY KEY,
+	nom TEXT,
+	prenom TEXT,
+	mail TEXT,
+	num TEXT,
+	age INTEGER,
+	motdepasse TEXT
+    );
+    """)
+c.execute("""
+    CREATE TABLE IF NOT EXISTS sauvegarde (
+    id_client INTEGER,
+	nom_ecole TEXT,
+	lien TEXT,
+	adresse TEXT,
+	PRIMARY KEY (id_client, nom_ecole)
+	FOREIGN KEY (id_client) REFERENCES client (id_client),
+	FOREIGN KEY (nom_ecole) REFERENCES ecoles (nom_ecole)
+    );
+    """)
+
+#CSV
+# #Table école
+# with open('ecoles.csv', 'r') as file:
+#     reader = csv.reader(file, delimiter=';')
+#
+#     for row in reader:
+#         c.execute('''INSERT INTO ecoles VALUES (?,?,?,?)''', row)
+#
+# #Table jobs
+# with open('jobs.csv', 'r') as file:
+#     reader = csv.reader(file, delimiter=';')
+#
+#     for row in reader:
+#         c.execute('''INSERT INTO jobs VALUES (?,?,?)''', row)
+#
+# #Table domaines
+# with open('domaines.csv', 'r') as file:
+#     reader = csv.reader(file, delimiter=';')
+#
+#     for row in reader:
+#         c.execute('''INSERT INTO domaines VALUES (?,?)''', row)
+#
+# #Table proposer
+# with open('proposer.csv', 'r') as file:
+#     reader = csv.reader(file, delimiter=';')
+#
+#     for row in reader:
+#         c.execute('''INSERT INTO proposer VALUES (?,?)''', row)
+#
+# #Table client
+# c.execute('''INSERT INTO client VALUES (0, "test", "test", "test", 0, 0, "test")''')
+
+
+#fin CSV
+
+# ---------------------------------------------- fin SQL --------------------------------------------#
+
+
+def inscription():
+    label = Label(fenetre, text="Inscription")
+    l1 = Label(fenetre, text = "Prénom:")
+    l2 = Label(fenetre, text = "Nom:")
+    l3 = Label(fenetre, text = "Age:")
+    s = Spinbox(fenetre, from_=0, to=99)
+    l4 = Label(fenetre, text = "Mail:")
+    l5 = Label(fenetre, text = "Numéro de téléphone:")
+    l6 = Label(fenetre, text = "Mot de passe:")
+
+
+    label.grid(row = 0, column = 1, sticky = W, pady = 4)
+    l1.grid(row = 1, column = 0, sticky = W, pady = 2)
+    l2.grid(row = 2, column = 0, sticky = W, pady = 2)
+    l3.grid(row = 3, column = 0, sticky = W, pady = 2)
+    s.grid(row = 3, column = 1, sticky = W, pady = 2)
+    l4.grid(row = 4, column = 0, sticky = W, pady = 2)
+    l5.grid(row = 5, column = 0, sticky = W, pady = 2)
+    l6.grid(row = 6, column = 0, sticky = W, pady = 2)
+
+    def show_msg_enregistrer():
+        c.execute("SELECT id_client FROM client")
+        L=c.fetchall()
+        id = str(L[-1][0]+1)
+        h1 = str(getEntry(e1))
+        h2 = str(getEntry(e2))
+        h3 = str(getEntry(s))
+        h4 = str(getEntry(e4))
+        h5 = str(getEntry(e5))
+        h6 = str(getEntry(e6))
+        fichier = open("mail.txt", "w")
+        fichier.write(h4)
+        fichier.close()
+        fenetre.destroy()
+        p = "INSERT INTO client VALUES ('" + id + "','" + h2 + "','" + h1 + "','" + h4 + "','" + h5 + "','" + h3 + "','" + h6 + "')"
+        c.executescript(p)
+
+    def getEntry(nm):
+        res = nm.get()
+        return res
+
+    button = ttk.Button(text= "Enregistrer>>",command=show_msg_enregistrer)
+    button.grid(row = 6, column = 2, pady = 2)
+
+
+    e1 = Entry(fenetre)
+    e2 = Entry(fenetre)
+    e4 = Entry(fenetre)
+    e5 = Entry(fenetre)
+    e6 = Entry(fenetre)
+
+    e1.grid(row = 1, column = 1, pady = 2)
+    e2.grid(row = 2, column = 1, pady = 2)
+    e4.grid(row = 4, column = 1, pady = 2)
+    e5.grid(row = 5, column = 1, pady = 2)
+    e6.grid(row = 6, column = 1, pady = 2)
+
+
+def connecter():
+    label = Label(fenetre, text="Connexion")
+    l1 = Label(fenetre, text = "Mail:")
+    l2 = Label(fenetre, text = "Mot de passe:")
+
+    label.grid(row = 0, column = 1, sticky = W, pady = 4)
+    l1.grid(row = 1, column = 0, sticky = W, pady = 2)
+    l2.grid(row = 2, column = 0, sticky = W, pady = 2)
+
+    def show():
+        h1 = str(getentry(e1))
+        h2 = str(getentry(e2))
+        fichier = open("mail.txt", "w")
+        fichier.write(h1)
+        fichier.close()
+        fenetre.destroy()
+        c.execute('''SELECT mail, motdepasse FROM client''')
+        liste=c.fetchall()
+        if (h1,h2) in liste:
+            i=0
+            #accéder au site
+        else:
+            #proposer de s'inscrire
+            i=0
+
+
+    def getentry(nm):
+        res = nm.get()
+        return res
+
+    button = ttk.Button(text= "Se connecter>>",command=show)
+    button.grid(row = 6, column = 2, pady = 2)
+
+    e1 = Entry(fenetre)
+    e2 = Entry(fenetre)
+
+    e1.grid(row = 1, column = 1, pady = 2)
+    e2.grid(row = 2, column = 1, pady = 2)
+
+
+
+def window():
+    #sign up
+    button2 = ttk.Button(text= "S'inscrire",command=inscription)
+    button2.grid(row = 2, column = 2, pady = 2)
+
+    #sign in
+    button3 = ttk.Button(text= "Se connecter",command=connecter)
+    button3.grid(row = 3, column = 2, pady = 2)
+
+    fenetre.mainloop()
+
+    # def destroy():
+    #     Button.destroy(button2)
+    #     Button.destroy(button3)
+
+
+window()
+
+#Validation
+connexion.commit()
+#Déconnexion
+connexion.close()
+
 
 #Définir en tant que variable global les fenetres dans le programme principal
 global zone1, zone2
