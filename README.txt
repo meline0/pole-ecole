@@ -35,7 +35,6 @@
 -> Relié pages entre elles
 
 
-
 ##Les problèmes rencontrés
 
 -Relier les pages tkinter entre elles
