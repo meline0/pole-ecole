@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk, messagebox
 import webbrowser
 import sqlite3
+import csv
 
 
 fenetre = Tk()
@@ -453,21 +454,30 @@ def creer_label_ecole(parent, nom, adresse, url):
     label_lien.bind("<Button-1>", ouvrir_lien)
 
     checked = BooleanVar()
-    checkup_button = Checkbutton(parent, text="Checkup", variable=checked, command=lambda: etat_bouton_fav(nom, adresse, url, fav_csv, checked.get()))
+    checkup_button = Checkbutton(parent, text="Ajouter aux favorits", variable=checked, command=lambda: etat_bouton_fav(nom, adresse, url, fav_csv, checked.get()))
     checkup_button.pack()
 
-def etat_bouton_fav(nom, adresse, url, csv_file, coche):
+def etat_bouton_fav(nom, adresse, url, coche):
     if coche:
         enregistre_dans_fav(nom, url,adresse)
 #    else:
 #        enregistre_dans_fav(nom, adresse, url, csv_file, delete=True)
 
 def enregistre_dans_fav(nom, lien, adresse):
+    connexion = sqlite3.connect('pole_ecole.db')
+    c = connexion.cursor()
+
     fichier = open("mail.txt", "r")
     mail = fichier.read()
-    c.execute("SELECT id_client From client WHERE mail ="+mail)
-    id = c.fetchall
-    c.execute('''INSERT INTO sauvegarde VALUES (?,?,?,?)''', id, nom, lien, adresse)
+    c.execute("SELECT id_client FROM client WHERE mail = ?", (mail))
+    id_client = c.fetchone()[0]
+
+    c.execute("INSERT INTO sauvegarde (id_client, nom_ecole, lien, adresse) VALUES (?, ?, ?, ?)", (id_client, nom, lien, adresse))
+
+    connexion.commit()
+    connexion.close()
+
+
 
 
 #def centrer_fenetre(window, width, height):
